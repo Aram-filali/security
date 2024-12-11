@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, Alert } from 'react-native';
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.123.165:3000'; // Remplacez par l'adresse IP locale de votre machine
+const BASE_URL = 'http://192.168.1.24:3000'; // Remplacez par l'adresse IP locale de votre machine
 
 export default function App() {
   const [name, setName] = useState('');
