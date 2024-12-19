@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -98,7 +96,7 @@ app.post('/add-user', async (req, res) => {
     );
 
     res.json({ 
-      message: 'User added successfully!', 
+      message: 'Patient added successfully!', 
       id: result.insertId 
     });
 

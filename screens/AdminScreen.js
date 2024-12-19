@@ -29,12 +29,12 @@ export default function AdminScreen({ navigation }) {
   const handleAdminLogin = async () => {
     // Input validation
     if (!email || !password) {
-      Alert.alert('Erreur', 'Veuillez remplir tous les champs');
+      Alert.alert('Error', 'All fields are required!!');
       return;
     }
 
     if (!isValidEmail(email)) {
-      Alert.alert('Erreur', 'L\'adresse e-mail est invalide!');
+      Alert.alert('Error', 'invalid e-mail address!!');
       return;
     }
 
@@ -54,20 +54,20 @@ export default function AdminScreen({ navigation }) {
       // Clear sensitive data
       setPassword('');
       
-      Alert.alert('Succès', 'Connexion réussie');
+      Alert.alert('Success', 'Login successful');
       navigation.navigate('PatientScreen');
     } catch (error) {
       console.error('Login failed:', error);
       
       if (error.response) {
         // The request was made and the server responded with a status code
-        Alert.alert('Erreur', error.response.data.message || 'Identifiants incorrects');
+        Alert.alert('Error', error.response.data.message || 'Incorrect credentials');
       } else if (error.request) {
         // The request was made but no response was received
-        Alert.alert('Erreur', 'Aucune réponse du serveur. Vérifiez votre connexion.');
+        Alert.alert('Error', 'No server response. Verify your connection plz.');
       } else {
         // Something happened in setting up the request
-        Alert.alert('Erreur', 'Erreur de connexion');
+        Alert.alert('Error', 'Connexion error');
       }
     } finally {
       setIsLoading(false);
@@ -83,11 +83,11 @@ export default function AdminScreen({ navigation }) {
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps='handled'
       >
-        <Text style={styles.title}>Connexion Admin</Text>
+        <Text style={styles.title}>admin connection</Text>
         
         <TextInput
           style={styles.textInput}
-          placeholder="Email"
+          placeholder="Enter admin Email"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -97,7 +97,7 @@ export default function AdminScreen({ navigation }) {
         
         <TextInput
           style={styles.textInput}
-          placeholder="Mot de passe"
+          placeholder="Enter password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry={true}
@@ -109,7 +109,7 @@ export default function AdminScreen({ navigation }) {
           disabled={isLoading}
         >
           <Text style={styles.buttonText}>
-            {isLoading ? 'Connexion...' : 'Se Connecter'}
+            {isLoading ? 'Connecting...' : 'Login'}
           </Text>
         </TouchableOpacity>
       </ScrollView>

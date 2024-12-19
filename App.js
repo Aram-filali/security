@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Alert } from 'react-native';
-import axios from 'axios';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import AdminScreen from './screens/AdminScreen';
+import PatientScreen from './screens/PatientScreen';
+import { StatusBar } from 'expo-status-bar';
 
-const BASE_URL = 'http://localhost:3000'; // Remplacez par l'adresse IP locale de votre machine
+const Stack = createStackNavigator();
+
+//const BASE_URL = 'http://localhost:3000'; // Remplacez par l'adresse IP locale de votre machine
 
 export default function App() {
   return (
@@ -20,12 +26,12 @@ export default function App() {
         <Stack.Screen 
           name="AdminScreen" 
           component={AdminScreen} 
-          options={{ title: 'Connexion Admin' }}
+          options={{ title: 'SecPac' }}
         />
         <Stack.Screen 
           name="PatientScreen" 
           component={PatientScreen} 
-          options={{ title: 'Gestion Patients' }}
+          options={{ title: 'Patients management' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -32,7 +32,7 @@ export default function PatientScreen({ navigation }) {
   const checkAdminToken = async () => {
     const token = await AsyncStorage.getItem('adminToken');
     if (!token) {
-      Alert.alert('Erreur', 'Veuillez vous reconnecter');
+      Alert.alert('Error', 'Try reconnecting');
       navigation.navigate('AdminScreen');
     }
   };
@@ -44,7 +44,7 @@ export default function PatientScreen({ navigation }) {
 
   const handleAdminLogin = async () => {
     if (!isValidEmail(email)) {
-      Alert.alert('Erreur', 'L\'adresse e-mail est invalide!');
+      Alert.alert('Error', 'Invalid e-mail address!');
       return;
     }
 
@@ -58,13 +58,13 @@ export default function PatientScreen({ navigation }) {
 
       if (response.data.message === 'Login successful') {
         setIsAdmin(true);
-        Alert.alert('Succès', 'Login successful');
+        Alert.alert('Success', 'Login successful');
       } else {
-        Alert.alert('Erreur', 'Identifiants incorrects');
+        Alert.alert('Error', 'Incorrect credentials');
       }
     } catch (error) {
       console.error('Login failed:', error);
-      Alert.alert('Erreur', 'Erreur de connexion');
+      Alert.alert('Error', 'Connexion error');
     } finally {
       setIsLoading(false);
     }
@@ -72,17 +72,17 @@ export default function PatientScreen({ navigation }) {
 
   const handleSignUp = async () => {
     if (!isAdmin) {
-      Alert.alert('Erreur', 'Vous devez être un admin pour ajouter des patients');
+      Alert.alert('Error', 'YOU ARE NOT THE ADMIN');
       return;
     }
 
     if (!name || !email || !sensitiveData) {
-      Alert.alert('Erreur', 'Tous les champs sont requis');
+      Alert.alert('Error', 'All fields are required!!');
       return;
     }
 
     if (!isValidEmail(email)) {
-      Alert.alert('Erreur', 'L\'adresse e-mail est invalide!');
+      Alert.alert('Error', 'invalid e-mail address!!');
       return;
     }
 
@@ -95,15 +95,15 @@ export default function PatientScreen({ navigation }) {
         sensitiveData
       });
 
-      Alert.alert('Succès', response.data.message);
+      Alert.alert('Success', response.data.message);
       
       // Reset form after successful submission
       setName('');
       setEmail('');
       setSensitiveData('');
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de l\'utilisateur:', error);
-      Alert.alert('Erreur', 'Impossible d\'ajouter l\'utilisateur');
+      console.error('Error adding patients:', error);
+      Alert.alert('Error', 'Unable to add patient');
     } finally {
       setIsLoading(false);
     }
@@ -125,10 +125,10 @@ export default function PatientScreen({ navigation }) {
       >
         {!isAdmin && (
           <View style={styles.loginSection}>
-            <Text style={styles.title}>Authentification Admin</Text>
+            <Text style={styles.title}>Admin Authentication</Text>
             <TextInput
               style={styles.textInput}
-              placeholder="Email"
+              placeholder="Enter email"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -136,7 +136,7 @@ export default function PatientScreen({ navigation }) {
             />
             <TextInput
               style={styles.textInput}
-              placeholder="Mot de passe"
+              placeholder="Enter password"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={true}
@@ -147,7 +147,7 @@ export default function PatientScreen({ navigation }) {
               disabled={isLoading}
             >
               <Text style={styles.buttonText}>
-                {isLoading ? 'Connexion...' : 'Se Connecter'}
+                {isLoading ? 'Connecting...' : 'Login'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -155,16 +155,16 @@ export default function PatientScreen({ navigation }) {
 
         {isAdmin && (
           <View style={styles.patientSection}>
-            <Text style={styles.title}>Ajouter un Patient</Text>
+            <Text style={styles.title}>Add Patient</Text>
             <TextInput
               style={styles.textInput}
-              placeholder="Nom du patient"
+              placeholder="Patient name"
               value={name}
               onChangeText={setName}
             />
             <TextInput
               style={styles.textInput}
-              placeholder="Email du patient"
+              placeholder="Patient email"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -172,11 +172,11 @@ export default function PatientScreen({ navigation }) {
             />
             <TextInput
               style={styles.textInput}
-              placeholder="Données sensibles"
+              placeholder="Patient details"
               value={sensitiveData}
               onChangeText={setSensitiveData}
               multiline
-              numberOfLines={4}
+              numberOfLines={10}
             />
             <TouchableOpacity 
               style={styles.button}
@@ -184,14 +184,14 @@ export default function PatientScreen({ navigation }) {
               disabled={isLoading}
             >
               <Text style={styles.buttonText}>
-                {isLoading ? 'Ajout en cours...' : 'Ajouter Patient'}
+                {isLoading ? 'Adding in progress...' : 'Add patient'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.logoutButton}
               onPress={handleLogout}
             >
-              <Text style={styles.logoutButtonText}>Déconnexion</Text>
+              <Text style={styles.logoutButtonText}>disconnect</Text>
             </TouchableOpacity>
           </View>
         )}
