@@ -88,7 +88,6 @@ function decrypt(encryptedData, privateKey) {
     throw new Error('Failed to decrypt data');
   }
 }
-
 module.exports = { 
   encrypt, 
   decrypt, 
