@@ -13,7 +13,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://192.168.16.165:3000'; // Update to your backend URL
+const BASE_URL = 'http://192.168.44.247:3000'; // Update to your backend URL
 
 export default function AdminScreen({ navigation }) {
   const [email, setEmail] = useState('');

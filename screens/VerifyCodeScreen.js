@@ -10,7 +10,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://192.168.16.165:3000';
+const BASE_URL = 'http://192.168.44.247:3000';
 
 export default function VerifyCodeScreen({ route, navigation }) {
   const { email } = route.params; // Retrieve the email from the previous screen
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
+    
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',

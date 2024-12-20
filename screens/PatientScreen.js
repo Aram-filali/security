@@ -14,7 +14,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://192.168.16.165:3000';
+const BASE_URL = 'http://192.168.44.247:3000';
 
 export default function PatientScreen({ navigation }) {
   const [name, setName] = useState('');

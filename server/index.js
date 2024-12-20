@@ -1,4 +1,3 @@
-// index.js
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -111,6 +110,7 @@ app.post('/add-user', async (req, res) => {
     const publicKey = getPublicKey();
     const encryptedSensitiveData = encrypt(sensitiveData, publicKey);
 
+    console.log('Encrypted Data:', encryptedSensitiveData);
     const [result] = await pool.execute(
       'INSERT INTO users (name, email, sensitiveData) VALUES (?, ?, ?)',
       [name, email, encryptedSensitiveData]
@@ -131,11 +131,18 @@ app.get('/users', async (req, res) => {
   try {
     const [rows] = await pool.execute('SELECT * FROM users');
     const privateKey = getPrivateKey();
-    
-    const decryptedUsers = rows.map(user => ({
-      ...user,
-      sensitiveData: decrypt(user.sensitiveData, privateKey)
-    }));
+
+    const decryptedUsers = rows.map(user => {
+      try {
+        return {
+          ...user,
+          sensitiveData: decrypt(user.sensitiveData, privateKey),
+        };
+      } catch (error) {
+        console.error(`Decryption failed for user ID ${user.id}:`, error);
+        return { ...user, sensitiveData: null }; // Return user with null sensitive data if decryption fails
+      }
+    });
 
     res.json(decryptedUsers);
   } catch (error) {
@@ -193,10 +200,6 @@ app.listen(port, () => {
 });
 
 module.exports = app;
-
-// database.js - No changes needed from original file
-
-// rsaUtils.js - No changes needed from original file
 
 
 
