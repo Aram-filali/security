@@ -73,7 +73,10 @@ function encrypt(data, publicKey) {
 // Enhanced decryption with error handling
 function decrypt(encryptedData, privateKey) {
   try {
+    // Décoder les données de base64
     const buffer = Buffer.from(encryptedData, 'base64');
+    
+    // Déchiffrement
     const decrypted = crypto.privateDecrypt(
       {
         key: privateKey,
@@ -84,10 +87,12 @@ function decrypt(encryptedData, privateKey) {
     );
     return JSON.parse(decrypted.toString('utf8'));
   } catch (error) {
-    console.error('Decryption error:', error);
-    throw new Error('Failed to decrypt data');
+    console.error('Decryption error:', error.message);
+    throw new Error(`Failed to decrypt data: ${error.message}`);
   }
 }
+
+
 
 module.exports = { 
   encrypt, 

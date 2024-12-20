@@ -14,7 +14,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://192.168.44.247:3000';
+const BASE_URL = 'http://192.168.16.165:3000';
 
 export default function PatientScreen({ navigation }) {
   const [name, setName] = useState('');
@@ -178,14 +178,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#4158d1ff',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 15,
   },
   consultButton: {
-    backgroundColor: '#28a745',
+    backgroundColor: '#4158d1ff',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',

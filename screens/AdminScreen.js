@@ -13,12 +13,22 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://192.168.44.247:3000'; // Update to your backend URL
+const BASE_URL = 'http://192.168.16.165:3000'; // Update to your backend URL
 
 export default function AdminScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Function to store admin email
+  const storeAdminEmail = async (email) => {
+    try {
+      await AsyncStorage.setItem('adminEmail', email);
+      console.log('Admin email stored:', email);
+    } catch (error) {
+      console.error('Error saving admin email:', error);
+    }
+  };
 
   // Enhanced email validation
   const isValidEmail = (email) => {
@@ -51,9 +61,12 @@ export default function AdminScreen({ navigation }) {
       // Store authentication token
       await AsyncStorage.setItem('adminToken', response.data.token);
 
+      // Store admin email
+      await storeAdminEmail(email);
+
       // Clear sensitive data
       setPassword('');
-      
+
       Alert.alert('Success', 'Login successful');
       navigation.navigate('PatientScreen');
     } catch (error) {
@@ -155,6 +168,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 
 
 

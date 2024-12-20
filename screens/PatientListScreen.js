@@ -14,7 +14,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BASE_URL = 'http://192.168.44.247:3000';
+const BASE_URL = 'http://192.168.16.165:3000';
 
 export default function PatientListScreen({ navigation }) {
   const [password, setPassword] = useState('');
@@ -35,14 +35,25 @@ export default function PatientListScreen({ navigation }) {
 
     try {
       const adminEmail = await AsyncStorage.getItem('adminEmail');
+      console.log('Admin Email:', adminEmail);  // Vérifiez si l'email est récupéré correctement
+
+      if (!adminEmail) {
+        Alert.alert('Error', 'Admin email is not set');
+        return;
+      }
+
       const response = await axios.post(`${BASE_URL}/verify-admin`, {
         email: adminEmail,
         password
       });
 
+      console.log('Response from server:', response.data);  // Vérifiez la réponse du serveur
+
       if (response.data.message === 'Verification successful') {
         setIsAuthenticated(true);
         fetchPatients();
+      } else {
+        Alert.alert('Error', 'Invalid password');
       }
     } catch (error) {
       console.error('Authentication failed:', error);
@@ -51,14 +62,32 @@ export default function PatientListScreen({ navigation }) {
   };
 
   const fetchPatients = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(`${BASE_URL}/users`);
       setPatients(response.data);
     } catch (error) {
       console.error('Error fetching patients:', error);
-      Alert.alert('Error', 'Unable to fetch patients');
+      let errorMessage = 'Unable to fetch patients';
+      
+      if (error.response) {
+        // Si le serveur répond avec un code d'erreur, afficher un message spécifique
+        errorMessage = `Server error: ${error.response.status}`;
+      } else if (error.request) {
+        // Si la requête n'a pas de réponse
+        errorMessage = 'No response from server';
+      } else {
+        // Autres erreurs
+        errorMessage = error.message;
+      }
+  
+      Alert.alert('Error', errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
+  
+  
 
   const handleEdit = (patient) => {
     setSelectedPatient(patient);
@@ -172,6 +201,10 @@ export default function PatientListScreen({ navigation }) {
             </View>
           </View>
         ))}
+
+        {isLoading ? (
+          <Text style={styles.loadingText}>Loading patients...</Text>
+        ) : null}
 
         <TouchableOpacity 
           style={styles.logoutButton}
@@ -296,7 +329,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#4158d1ff',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -315,49 +348,44 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     flex: 1,
-    marginLeft: 5,
     alignItems: 'center',
   },
   logoutButton: {
-    backgroundColor: '#dc3545',
+    backgroundColor: '#f44336',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop: 20,
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  loadingText: {
+    textAlign: 'center',
+    fontSize: 18,
+    marginTop: 20,
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    padding: 20,
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     backgroundColor: 'white',
-    borderRadius: 8,
     padding: 20,
+    borderRadius: 8,
+    width: '80%',
   },
   modalTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 20,
-  },
-  textArea: {
-    height: 100,
-    textAlignVertical: 'top',
+    marginBottom: 15,
   },
   modalButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   cancelButton: {
-    backgroundColor: '#6c757d',
-    padding: 15,
+    backgroundColor: '#ccc',
+    padding: 10,
     borderRadius: 8,
     flex: 1,
     marginRight: 5,
@@ -365,10 +393,13 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     backgroundColor: '#28a745',
-    padding: 15,
+    padding: 10,
     borderRadius: 8,
     flex: 1,
-    marginLeft: 5,
     alignItems: 'center',
   },
+  textArea: {
+    height: 100,
+    textAlignVertical: 'top',
+  }
 });

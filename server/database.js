@@ -74,7 +74,7 @@ const initializeDatabase = async () => {
     if (admins.length === 0) {
       console.log('No admins found. Creating default admin account...');
       try {
-        await addAdmin('soumaya@gmail.com', 'azertyyy');
+        await addAdmin('aram@gmail.com', 'azertyyy');
         console.log('Default admin account created successfully');
       } catch (error) {
         console.error('Error creating default admin:', error);
